@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Contains px_web_meta.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function px_web_meta_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the px_web_meta module.
+    case 'help.page.px_web_meta':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Module for px web for Hagstovan') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+ /*
+function px_web_meta_theme() {
+  return [
+    'px_web_meta' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+*/

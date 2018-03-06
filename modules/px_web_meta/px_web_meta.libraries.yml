@@ -1,0 +1,6 @@
+px_web_meta_form_actions:
+  version: 1.x
+  js:
+    px_web_meta_form_actions.js: {}
+    px.min.js: {}
+    underscore-min.js: {}
