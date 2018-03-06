@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @FieldFormatter(
  *   id = "px_web_meta_formatter_type",
- *   label = @Translation("PX Web Graph (Highcharts) formatter type"),
+ *   label = @Translation("PX Web Meta formatter type"),
  *   field_types = {
  *     "px_web_meta_field_type"
  *   }
@@ -46,7 +46,10 @@ class PxWebMetaFormatterType extends FormatterBase {
       $storageName = "pxMetaPlaceholder".$id;
       $elements[$delta] = array(
         '#type' => 'markup',
-        '#markup' => $markup
+        '#markup' => $markup,
+        '#lastUpdated' => $item->lastUpdated,
+        '#nextUpdate' => $item->nextUpdate,
+        '#contact' => $item->contact
       );
     }
 
