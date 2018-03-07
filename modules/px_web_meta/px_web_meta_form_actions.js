@@ -14,8 +14,12 @@
             $.each($elements,function(index, element) {
                 let $base = $(element);
 
-                let lastUpdated = $base.find(".edit-field-last-updated");
-                let nextUpdate = $base.find(".edit-field-next-update");
+                let lastUpdatedOuter = $base.find(".edit-field-last-updated-outer");
+                let lastUpdated = lastUpdatedOuter.find("input");
+
+                let nextUpdatedOuter = $base.find(".edit-field-last-next-update-outer");
+                let nextUpdate = nextUpdatedOuter.find("input");
+
                 let contact = $base.find(".edit-field-contact");
 
                 let pxFileUrlElement = $base.find(".edit-field-px-file-url");
@@ -53,16 +57,21 @@
                         else if(metadata["CONTACT"])
                             contactValue = metadata["CONTACT"]["TABLE"]
 
-                        lastUpdated.val(lastUpdatedValue);
-                        nextUpdate.val(nextUpdateValue);
+                        lastUpdated.val(toDateString(lastUpdatedValue));
+                        nextUpdate.val(toDateString(nextUpdateValue));
                         contact.val(contactValue);
                     });
                 });
-
             });
         }
     };
 
+    let toDateString = function(pxDate) {
+
+        if(pxDate.length < 8)
+            return "";
+        return pxDate.substring(0,4) + "-" + pxDate.substring(4,6)  + "-" + pxDate.substring(6,8);
+    }
 
     let queryPxFile = function(address, callback) {
         log("queryPxFile " + address);

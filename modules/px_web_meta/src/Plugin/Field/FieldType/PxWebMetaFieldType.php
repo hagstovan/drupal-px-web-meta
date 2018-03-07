@@ -32,15 +32,19 @@ class PxWebMetaFieldType extends FieldItemBase {
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
 
-    $properties['lastUpdated'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('lastUpdated'))
-      ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
-      ->setRequired(TRUE);
+    $properties['lastUpdated'] = DataDefinition::create('any')
+        ->setLabel(t('Computed date'))
+        ->setDescription(t('The computed last updated DateTime object.'))
+        ->setComputed(TRUE)
+        ->setClass('\\Drupal\\datetime\\DateTimeComputed')
+        ->setSetting('date source', 'value');
 
-    $properties['nextUpdate'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('nextUpdate'))
-      ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
-      ->setRequired(TRUE);
+    $properties['nextUpdate'] = DataDefinition::create('any')
+        ->setLabel(t('Computed date'))
+        ->setDescription(t('The computed next update DateTime object.'))
+        ->setComputed(TRUE)
+        ->setClass('\\Drupal\\datetime\\DateTimeComputed')
+        ->setSetting('date source', 'value');
 
     $properties['contact'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('contact'))
@@ -61,20 +65,18 @@ class PxWebMetaFieldType extends FieldItemBase {
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'lastUpdated' => [
-          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
-          'length' => 65000,
-          'binary' => $field_definition->getSetting('case_sensitive'),
+            'type' => 'varchar',
+            'mysql_type' => 'datetime',
         ],
         'nextUpdate' => [
-          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
-          'length' => 65000,
-          'binary' => $field_definition->getSetting('case_sensitive'),
+            'type' => 'varchar',
+            'mysql_type' => 'datetime',
         ],
         'contact' => [
           'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
-        ],
+        ]
       ],
     ];
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\px_web_meta\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -56,7 +57,6 @@ class PxWebMetaWidgetType extends WidgetBase {
         '#type' => 'fieldset',
       );
     }
-
     $element['pxFileUrl'] = [
       '#type' => 'textfield',
       '#title' => 'Fyrispurningur úr hagtalsgrunni (PX-fíluslag)',
@@ -66,17 +66,19 @@ class PxWebMetaWidgetType extends WidgetBase {
     ];
 
     $element['lastUpdated'] = [
-      '#type' => 'textfield',
-      '#title' => 'Seinast dagført (dd-MM-yyyy)',
-      '#attributes' => ['class' => ['edit-field-last-updated']],
-      '#default_value' => isset($items[$delta]->lastUpdated) ? $items[$delta]->lastUpdated : "",
+        '#type' => 'date',
+        '#title' => 'Seinast dagført',
+        '#prefix' => '<div class="edit-field-last-updated-outer">',
+        '#suffix' => '</div>',
+        '#default_value' => isset($items[$delta]->lastUpdated) ? (new DrupalDateTime($items[$delta]->lastUpdated))->format("Y-m-d") : ''
     ];
 
     $element['nextUpdate'] = [
-      '#type' => 'textfield',
-      '#title' => 'Næsta dagføring (dd-MM-yyyy)',
-      '#attributes' => ['class' => ['edit-field-next-update']],
-      '#default_value' => isset($items[$delta]->nextUpdate) ? $items[$delta]->nextUpdate : "",
+      '#type' => 'date',
+        '#title' => 'Næsta dagføring',
+        '#prefix' => '<div class="edit-field-last-next-update-outer">',
+        '#suffix' => '</div>',
+        '#default_value' => isset($items[$delta]->nextUpdate) ? (new DrupalDateTime($items[$delta]->nextUpdate))->format("Y-m-d") : ''
     ];
 
     $element['contact'] = [
