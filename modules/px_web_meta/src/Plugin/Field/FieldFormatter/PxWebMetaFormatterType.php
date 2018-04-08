@@ -7,8 +7,9 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\px_web_graph\Utilities;
+use Drupal\px_web_meta\Utilities;
 
+use Drupal\node\Entity\Node;
 /**
  * Plugin implementation of the 'px_web_meta_formatter_type' formatter.
  *
@@ -35,27 +36,68 @@ class PxWebMetaFormatterType extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = array();
 
+    
+
     foreach ($items as $delta => $item) {
-      $lastUpdated = null;
-      $nextUpdate = null;
-      $contect = null;
+      $lastUpdated = $item->lastUpdated;
+      $nextUpdate = $item->nextUpdate;
+      $contect = $item->contact;
 
       try  {
         //Load the data
         $utilities = new Utilities();
         $pxFile = $utilities->getPxFile($item->pxFileUrl);
 
-        $lastUpdatedWrapper = $pxFile->keyword("LAST-UPDATED");
-        if($lastUpdatedWrapper && count($lastUpdatedWrapper->values) > 0) {
-          $lastUpdated = $lastUpdatedWrapper->values[0];
+        if($pxFile)  
+        {        
+          
+          $lastUpdatedWrapper = $pxFile->keyword("LAST-UPDATED");
+          if($lastUpdatedWrapper && count($lastUpdatedWrapper->values) > 0) {
+            $lastUpdated = $lastUpdatedWrapper->values[0];
+          }
+          
+          $nextUpdateWrapper = $pxFile->keyword("NEXT-UPDATE");
+          if($nextUpdateWrapper) {
+            $nextUpdate = $nextUpdateWrapper->values[0];
+          }
+
+          $contectWrapper = $pxFile->keyword("CONTACT"); 
+          if($contectWrapper) {
+            $contect = $contectWrapper->values[0];
+          }
+
+          //Update Database          
+          //$entity = $item->getEntity();
+          //echo $iten->field_name;
+          //var_dump($entity);
+          //$node = Node::load($entity->id());
+
+          // echo "<br/>1<br/>";
+          // var_dump( $node );
+          // $item->lastUpdated = $lastUpdated;
+          // $item->nextUpdate = $nextUpdate;
+          // $item->contact = $contect;
+          // $item->save();
+
+          //$node = node_load($entity->id());
+          //entity_metadata_wrapper($entity->getType(), $node);
+
+          //entity_metadata_wrapper('node', $entity->id());
+
+          // $entity->wrapper()
+          // $node_wrapper = entity_metadata_wrapper('node', $node);
+          // $node_wrapper->lastUpdated->set($lastUpdated);
+          // $node_wrapper->nextUpdate->set($nextUpdate);
+          // $node_wrapper->contact->set($contect);
+          // $node_wrapper->save();
         }
+      } catch (Exception $e) { 
 
-        $nextUpdateWrapper = $pxFile->keyword("NEXT-UPDATE")->values[0];
-        $nextUpdate = $nextUpdateWrapper;
+        echo "<br/>";
+        echo $e;
+        
 
-        $contectWrapper = $pxFile->keyword("CONTACT")->values[0];
-        $contect = $contectWrapper;
-      } catch (Exception $e) { }
+      }
 
       //Use stored values if not found
       if(!$lastUpdated)
@@ -77,9 +119,9 @@ class PxWebMetaFormatterType extends FormatterBase {
       $elements[$delta] = array(
         '#type' => 'markup',
         '#markup' => $markup,
-        '#lastUpdated' => $item->lastUpdated,
-        '#nextUpdate' => $item->nextUpdate,
-        '#contact' => $item->contact
+        '#lastUpdated' => $lastUpdated,
+        '#nextUpdate' => $nextUpdate,
+        '#contact' => $contect
       );
     }
 
