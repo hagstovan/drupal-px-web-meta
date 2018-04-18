@@ -197,7 +197,8 @@ class Px
     {
         $list = $this->keywordList($keyword);
         if (empty($list)) {
-            throw new RuntimeException(sprintf('Keyword "%s" does not exist.', $keyword));
+            return null;
+            //throw new RuntimeException(sprintf('Keyword "%s" does not exist.', $keyword));
         }
 
         return $this->extractLanguageSpecificData($list);

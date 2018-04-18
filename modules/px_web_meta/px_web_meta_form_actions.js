@@ -39,6 +39,7 @@
                         log(pxFile);
 
                         let metadata = pxFile.metadata;
+
                         let lastUpdatedValue = null;
                         if(metadata["LAST-UPDATED[fo]"])
                             lastUpdatedValue = metadata["LAST-UPDATED[fo]"]["TABLE"]
@@ -57,6 +58,19 @@
                         else if(metadata["CONTACT"])
                             contactValue = metadata["CONTACT"]["TABLE"]
 
+                        //Validation
+                        var errorString = "";
+                        if (!lastUpdatedValue)
+                            errorString += " [LAST-UPDATED],";
+                        if (!nextUpdateValue)
+                            errorString += " [LAST-UPDATE],";
+                        if (!contactValue)
+                            errorString += " [CONTACT],";
+                            
+                        if(errorString.length > 0) {
+                            alert("Values not found in px file\n    " + errorString.substr(0, errorString.length - 1) + '\n\nCan only use hardcoded values, and will NOT update automatically. Pleas verify that the pxfile is correct.');
+                        }
+
                         lastUpdated.val(toDateString(lastUpdatedValue));
                         nextUpdate.val(toDateString(nextUpdateValue));
                         contact.val(contactValue);
@@ -68,7 +82,7 @@
 
     let toDateString = function(pxDate) {
 
-        if(pxDate.length < 8)
+        if (!pxDate || pxDate.length < 8)
             return "";
         return pxDate.substring(0,4) + "-" + pxDate.substring(4,6)  + "-" + pxDate.substring(6,8);
     }

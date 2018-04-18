@@ -50,7 +50,6 @@ class PxWebMetaFormatterType extends FormatterBase {
 
         if($pxFile)  
         {        
-          
           $lastUpdatedWrapper = $pxFile->keyword("LAST-UPDATED");
           if($lastUpdatedWrapper && count($lastUpdatedWrapper->values) > 0) {
             $lastUpdated = $lastUpdatedWrapper->values[0];

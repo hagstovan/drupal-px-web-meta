@@ -70,21 +70,24 @@ class PxWebMetaWidgetType extends WidgetBase {
         '#title' => 'Seinast dagført',
         '#prefix' => '<div class="edit-field-last-updated-outer">',
         '#suffix' => '</div>',
+        '#required' => true,
         '#default_value' => isset($items[$delta]->lastUpdated) ? (new DrupalDateTime($items[$delta]->lastUpdated))->format("Y-m-d") : ''
     ];
 
     $element['nextUpdate'] = [
       '#type' => 'date',
-        '#title' => 'Næsta dagføring',
-        '#prefix' => '<div class="edit-field-last-next-update-outer">',
-        '#suffix' => '</div>',
-        '#default_value' => isset($items[$delta]->nextUpdate) ? (new DrupalDateTime($items[$delta]->nextUpdate))->format("Y-m-d") : ''
+      '#title' => 'Næsta dagføring',
+      '#prefix' => '<div class="edit-field-last-next-update-outer">',
+      '#suffix' => '</div>',
+      '#required' => true,
+      '#default_value' => isset($items[$delta]->nextUpdate) ? (new DrupalDateTime($items[$delta]->nextUpdate))->format("Y-m-d") : ''
     ];
 
     $element['contact'] = [
       '#type' => 'textfield',
       '#title' => 'Ábyrgdari',
       '#attributes' => ['class' => ['edit-field-contact']],
+      '#required' => true,
       '#default_value' => isset($items[$delta]->contact) ? $items[$delta]->contact : "",
     ];
 
